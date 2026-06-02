@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <title>CleanWash — Car Wash Management</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      integrity="sha512-Avb2QiuDEEvB4bZJYdftl+I2H5bKjJrT5lQmM8C9QvK0v2uQ3kQvOaQpGmS0WJ0uW2yZrV7u9qG7xE2H8q6K0g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar__top">
+          <a class="brand" href="#" aria-label="CleanWash Home">
+            <span class="brand__logo" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span>
+            <span class="brand__text">
+              <span class="brand__name">CleanWash</span>
+              <span class="brand__tag">Car Wash Management</span>
+            </span>
+          </a>
+
+          <button class="icon-btn sidebar__close" id="sidebarClose" aria-label="Close navigation">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <nav class="nav">
+          <button class="nav__item is-active" data-section="dashboard">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Dashboard</span>
+          </button>
+          <button class="nav__item" data-section="customers">
+            <i class="fa-solid fa-users"></i>
+            <span>Customers</span>
+          </button>
+          <button class="nav__item" data-section="services">
+            <i class="fa-solid fa-spray-can-sparkles"></i>
+            <span>Services</span>
+          </button>
+          <button class="nav__item" data-section="transactions">
+            <i class="fa-solid fa-receipt"></i>
+            <span>Transactions</span>
+          </button>
+
+        </nav>
+
+        <div class="sidebar__footer">
+          <div class="mini-card">
+            <div class="mini-card__icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="mini-card__body">
+              <div class="mini-card__title">LocalStorage Mode</div>
+              <div class="mini-card__sub">No backend required</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main -->
+      <main class="main">
+        <header class="topbar">
+          <div class="topbar__left">
+            <button class="icon-btn" id="sidebarOpen" aria-label="Open navigation">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="topbar__title">
+              <div class="topbar__heading" id="pageTitle">Dashboard</div>
+              <div class="topbar__subtitle" id="pageSubtitle">Overview and performance</div>
+            </div>
+          </div>
+
+          <div class="topbar__right">
+            <div class="search search--global">
+              <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+              <input
+                id="globalSearch"
+                type="search"
+                placeholder="Search customers, services, transactions…"
+                autocomplete="off"
+              />
+              <button class="icon-btn icon-btn--sm" id="clearGlobalSearch" aria-label="Clear search">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+            <button class="user-pill" id="userProfileBtn" type="button" title="Profile">
+              <span class="user-pill__avatar" id="userAvatar">G</span>
+              <span class="user-pill__meta">
+                <span class="user-pill__name" id="userName">Geraldo</span>
+                <span class="user-pill__role" id="userRole">Manager</span>
+              </span>
+              <span class="user-pill__chev" aria-hidden="true"><i class="fa-solid fa-chevron-down"></i></span>
+            </button>
+          </div>
+        </header>
+
+        <section class="content">
+          <!-- Dashboard -->
+          <section class="view view--active" id="view-dashboard" data-view="dashboard">
+            <div class="banner">
+              <div class="banner__left">
+                <div class="badge">
+                  <i class="fa-solid fa-crown"></i>
+                  <span>Premium Dashboard</span>
+                </div>
+                <h1 class="banner__title">Welcome, <span id="greetingName">Gerald</span>.</h1>
+                <div class="banner__meta">
+                  <span class="chip chip--ok"><i class="fa-solid fa-user-shield"></i><span id="greetingRole">Manager</span></span>
+                  <span class="chip"><i class="fa-solid fa-id-badge"></i><span id="greetingDisplayName">Geraldo</span></span>
+                </div>
+                <p class="banner__desc">
+                  Manage customers, services, and transactions in one place — lightning-fast and
+                  fully offline.
+                </p>
+                <div class="banner__actions">
+                  <button class="btn btn--primary" data-quick-add="transaction">
+                    <i class="fa-solid fa-plus"></i>
+                    New Transaction
+                  </button>
+                  <button class="btn btn--secondary" data-quick-add="customer">
+                    <i class="fa-solid fa-user-plus"></i>
+                    Add Customer
+                  </button>
+                </div>
+              </div>
+              <div class="banner__right">
+                <div class="banner-metric">
+                  <div class="banner-metric__label">Today’s Revenue</div>
+                  <div class="banner-metric__value" id="kpiTodayRevenue">$0</div>
+                  <div class="banner-metric__meta" id="kpiTodayMeta">0 transactions</div>
+                </div>
+                <canvas class="spark" id="revenueSpark" width="520" height="150" aria-label="Revenue trend"></canvas>
+              </div>
+            </div>
+
+            <div class="grid grid--cards">
+              <article class="stat-card">
+                <div class="stat-card__icon"><i class="fa-solid fa-users"></i></div>
+                <div class="stat-card__body">
+                  <div class="stat-card__label">Total Customers</div>
+                  <div class="stat-card__value" id="statCustomers">0</div>
+                  <div class="stat-card__hint" id="statCustomersHint">Active profiles</div>
+                </div>
+              </article>
+
+              <article class="stat-card">
+                <div class="stat-card__icon"><i class="fa-solid fa-spray-can-sparkles"></i></div>
+                <div class="stat-card__body">
+                  <div class="stat-card__label">Total Services</div>
+                  <div class="stat-card__value" id="statServices">0</div>
+                  <div class="stat-card__hint" id="statServicesHint">Catalog items</div>
+                </div>
+              </article>
+
+              <article class="stat-card">
+                <div class="stat-card__icon"><i class="fa-solid fa-receipt"></i></div>
+                <div class="stat-card__body">
+                  <div class="stat-card__label">Total Transactions</div>
+                  <div class="stat-card__value" id="statTransactions">0</div>
+                  <div class="stat-card__hint" id="statTransactionsHint">All-time</div>
+                </div>
+              </article>
+            </div>
+
+            <div class="grid grid--split">
+              <article class="panel">
+                <div class="panel__head">
+                  <div>
+                    <h2 class="panel__title">Performance</h2>
+                    <p class="panel__sub">Key statistics calculated from your stored data</p>
+                  </div>
+                </div>
+                <div class="panel__body">
+                  <div class="kpi-grid">
+                    <div class="kpi">
+                      <div class="kpi__label">Total Revenue</div>
+                      <div class="kpi__value" id="kpiTotalRevenue">$0</div>
+                      <div class="kpi__meta" id="kpiTotalRevenueMeta">All-time earnings</div>
+                    </div>
+                    <div class="kpi">
+                      <div class="kpi__label">Average Ticket</div>
+                      <div class="kpi__value" id="kpiAvgTicket">$0</div>
+                      <div class="kpi__meta" id="kpiAvgTicketMeta">Per transaction</div>
+                    </div>
+                    <div class="kpi">
+                      <div class="kpi__label">Completion Rate</div>
+                      <div class="kpi__value" id="kpiCompletionRate">0%</div>
+                      <div class="kpi__meta" id="kpiCompletionRateMeta">Completed vs. all</div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="panel">
+                <div class="panel__head">
+                  <div>
+                    <h2 class="panel__title">Recent Transactions</h2>
+                    <p class="panel__sub">Latest activity at a glance</p>
+                  </div>
+                  <button class="btn btn--ghost" data-section-link="transactions">
+                    View all
+                    <i class="fa-solid fa-arrow-right"></i>
+                  </button>
+                </div>
+                <div class="panel__body">
+                  <div class="list" id="recentTransactions"></div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <!-- Customers -->
+          <section class="view" id="view-customers" data-view="customers">
+            <div class="view__head">
+              <div class="view__head-left">
+                <h2 class="view__title">Customers</h2>
+                <p class="view__sub">Create and manage customer profiles</p>
+              </div>
+              <div class="view__head-right">
+                <div class="search">
+                  <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                  <input id="customerSearch" type="search" placeholder="Search by name, phone, plate…" />
+                </div>
+                <button class="btn btn--primary" id="addCustomerBtn">
+                  <i class="fa-solid fa-plus"></i>
+                  Add Customer
+                </button>
+              </div>
+            </div>
+
+            <article class="panel">
+              <div class="panel__body panel__body--flush">
+                <div class="table-wrap">
+                  <table class="table" id="customersTable" aria-label="Customers table">
+                    <thead>
+                      <tr>
+                        <th>Customer</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Vehicle</th>
+                        <th>Plate</th>
+                        <th>Created</th>
+                        <th class="th-actions">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <!-- Services -->
+          <section class="view" id="view-services" data-view="services">
+            <div class="view__head">
+              <div class="view__head-left">
+                <h2 class="view__title">Services</h2>
+                <p class="view__sub">Define packages and pricing</p>
+              </div>
+              <div class="view__head-right">
+                <div class="search">
+                  <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                  <input id="serviceSearch" type="search" placeholder="Search services…" />
+                </div>
+                <button class="btn btn--primary" id="addServiceBtn">
+                  <i class="fa-solid fa-plus"></i>
+                  Add Service
+                </button>
+              </div>
+            </div>
+
+            <article class="panel">
+              <div class="panel__body panel__body--flush">
+                <div class="table-wrap">
+                  <table class="table" id="servicesTable" aria-label="Services table">
+                    <thead>
+                      <tr>
+                        <th>Service</th>
+                        <th>Duration</th>
+                        <th>Price</th>
+                        <th>Description</th>
+                        <th class="th-actions">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <!-- Transactions -->
+          <section class="view" id="view-transactions" data-view="transactions">
+            <div class="view__head">
+              <div class="view__head-left">
+                <h2 class="view__title">Transactions</h2>
+                <p class="view__sub">Track payments and job statuses</p>
+              </div>
+              <div class="view__head-right">
+                <div class="search">
+                  <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                  <input id="transactionSearch" type="search" placeholder="Search by customer, service, status…" />
+                </div>
+                <select class="select" id="transactionStatusFilter" aria-label="Filter transactions by status">
+                  <option value="">All statuses</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Canceled">Canceled</option>
+                </select>
+                <button class="btn btn--primary" id="addTransactionBtn">
+                  <i class="fa-solid fa-plus"></i>
+                  Add Transaction
+                </button>
+              </div>
+            </div>
+
+            <article class="panel">
+              <div class="panel__body panel__body--flush">
+                <div class="table-wrap">
+                  <table class="table" id="transactionsTable" aria-label="Transactions table">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Payment</th>
+                        <th>Amount</th>
+                        <th>Notes</th>
+                        <th class="th-actions">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </article>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <!-- Overlay for mobile sidebar + modal -->
+    <div class="overlay" id="overlay" aria-hidden="true"></div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+      <div class="modal__panel">
+        <div class="modal__head">
+          <div>
+            <h3 class="modal__title" id="modalTitle">Modal</h3>
+            <p class="modal__sub" id="modalSub">Details</p>
+          </div>
+          <button class="icon-btn" id="modalClose" aria-label="Close modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal__body" id="modalBody"></div>
+      </div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
